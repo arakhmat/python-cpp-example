@@ -33,13 +33,13 @@ joined_s = pyjoin(words, sep)
 
 ## Useful Links
 ### Python 3
-[Extending Python with C or C++](https://docs.python.org/3/extending/extending.html)
-[C API](https://docs.python.org/3/c-api/)
-[Parse Arguments From Python in C](https://docs.python.org/3/c-api/arg.html)
+[Extending Python with C or C++](https://docs.python.org/3/extending/extending.html)\
+[C API](https://docs.python.org/3/c-api/)\
+[Parse Arguments From Python in C](https://docs.python.org/3/c-api/arg.html)\
 [Return Value from C to Python](https://docs.python.org/3/c-api/arg.html#building-valuesrg/3/c-api/arg.html)
 
 ### Python 2
-[Extending Python with C or C++](https://docs.python.org/2/extending/extending.html)
-[C API](https://docs.python.org/2/c-api/)
-[Parse Arguments From Python in C](https://docs.python.org/2.0/ext/parseTuple.html)
+[Extending Python with C or C++](https://docs.python.org/2/extending/extending.html)\
+[C API](https://docs.python.org/2/c-api/)\
+[Parse Arguments From Python in C](https://docs.python.org/2.0/ext/parseTuple.html)\
 [Return Value from C to Python](https://docs.python.org/2.0/ext/buildValue.html)
