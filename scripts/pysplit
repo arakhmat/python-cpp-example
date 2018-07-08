@@ -1,0 +1,34 @@
+#!/usr/bin/env python2
+import argparse
+
+from pystring import pysplit
+
+
+def main():
+
+  # Parse arguments
+  parser = argparse.ArgumentParser()
+  parser.add_argument('-s', '--s', type=str, required=True, help='string')
+  parser.add_argument(
+      '-sep',
+      '--sep',
+      type=str,
+      default=' ',
+      help='separator to split the string with')
+  parser.add_argument(
+      '-m', '--maxsplit', type=int, default=-1, help='number of splits to make')
+  args = parser.parse_args()
+
+  s = args.s.encode('ascii', 'ignore')
+  sep = args.sep
+  maxsplit = args.maxsplit
+
+  output = pysplit(s, sep, maxsplit)
+  golden_output = s.split(sep, maxsplit)
+
+  print('Input:  "{}"'.format(s))
+  print('Output: "{}"'.format(output))
+
+
+if __name__ == '__main__':
+  main()

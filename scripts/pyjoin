@@ -1,0 +1,27 @@
+#!/usr/bin/env python2
+import argparse
+
+from pystring import pyjoin
+
+
+def main():
+
+  # Parse arguments
+  parser = argparse.ArgumentParser()
+  parser.add_argument(
+      '-w', '--words', nargs='+', required=True, help='list of strings to join')
+  parser.add_argument(
+      '-sep', '--sep', type=str, default=' ', help='separator to join with')
+  args = parser.parse_args()
+
+  words = args.words
+  sep = args.sep
+
+  output = pyjoin(words, sep)
+
+  print('Input:  "{}"'.format(words))
+  print('Output: "{}"'.format(output))
+
+
+if __name__ == '__main__':
+  main()
