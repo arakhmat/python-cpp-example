@@ -26,11 +26,18 @@ static PyObject* py_split(PyObject* self, PyObject *args, PyObject *kwargs) {
         return Py_None;
 
     auto tokens = string::split(s, sep, maxsplit);
-    PyObject* splits = PyList_New(tokens.size());
+    PyObject* ret_obj = PyList_New(tokens.size());
     for (int i = 0; i < tokens.size(); i++) {
-        PyList_SetItem(splits, i, PyString_FromString(tokens[i].c_str()));
+        const char *token = tokens[i].c_str();
+        PyObject* token_obj;
+#if PY_MAJOR_VERSION >= 3
+        token_obj = PyUnicode_FromString(token);
+#else
+        token_obj = PyString_FromString(token);
+#endif
+        PyList_SetItem(ret_obj, i, token_obj);
     }
-    return Py_BuildValue("O", splits);
+    return Py_BuildValue("O", ret_obj);
 }
 
 static PyObject* py_join(PyObject* self, PyObject *args, PyObject *kwargs) {
@@ -52,7 +59,13 @@ static PyObject* py_join(PyObject* self, PyObject *args, PyObject *kwargs) {
 
     std::vector<std::string> tokens;
     for (int i = 0; i < PyList_Size(words); i++) {
-        char *token = PyString_AsString(PyList_GetItem(words, i));
+        auto item = PyList_GetItem(words, i);
+        char *token;
+#if PY_MAJOR_VERSION >= 3
+        token = (char*) PyUnicode_DATA(item);
+#else
+        token = PyString_AsString(item);
+#endif
         tokens.push_back(std::string(token, token + strlen(token)));
     }
     auto s = string::join(tokens, sep);
@@ -60,15 +73,30 @@ static PyObject* py_join(PyObject* self, PyObject *args, PyObject *kwargs) {
 }
 
 // Mapping between python and c function names.
-static PyMethodDef cppstringModule_methods[] = {
+static PyMethodDef cppstring_module_methods[] = {
     {"split", (PyCFunction) py_split, METH_VARARGS | METH_KEYWORDS},
     {"join", (PyCFunction) py_join, METH_VARARGS | METH_KEYWORDS},
     {NULL, NULL, 0, NULL}
 };
+/* Module entry point Python 3 */
 
-PyMODINIT_FUNC initcppstring(void) {
-    PyObject *m;
-    m = Py_InitModule("cppstring", cppstringModule_methods);
-    if (m == NULL)
-        return;
+#if PY_MAJOR_VERSION >= 3
+static struct PyModuleDef cppstring = {
+    PyModuleDef_HEAD_INIT,
+    "cppstring",   /* name of module */
+    NULL, /* module documentation, may be NULL */
+    -1,       /* size of per-interpreter state of the module,
+                 or -1 if the module keeps state in global variables. */
+    cppstring_module_methods
+};
+
+PyMODINIT_FUNC PyInit_cppstring(void)
+{
+    return PyModule_Create(&cppstring);
 }
+#else
+PyMODINIT_FUNC initcppstring(void) {
+    Py_InitModule("cppstring", cppstring_module_methods);
+}
+#endif
+

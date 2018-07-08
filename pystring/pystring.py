@@ -12,8 +12,8 @@ def pysplit(s, sep=' ', maxsplit=-1):
         '(pysplit): If separator has more than one character, it will behave differently than the default python implementation.',
         UserWarning)
 
-  # Copy is necessary to ensure that original string is unaltered
-  s_copy = '{}'.format(s)
+  # Copy the string to ensure that original string is unaltered
+  s_copy = '{} '.format(s)[:-1]
   return cppstring.split(s_copy, sep, maxsplit)
 
 

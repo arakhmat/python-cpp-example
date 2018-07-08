@@ -19,12 +19,11 @@ def main():
       '-m', '--maxsplit', type=int, default=-1, help='number of splits to make')
   args = parser.parse_args()
 
-  s = args.s.encode('ascii', 'ignore')
+  s = args.s
   sep = args.sep
   maxsplit = args.maxsplit
 
   output = pysplit(s, sep, maxsplit)
-  golden_output = s.split(sep, maxsplit)
 
   print('Input:  "{}"'.format(s))
   print('Output: "{}"'.format(output))
